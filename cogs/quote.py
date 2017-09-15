@@ -12,6 +12,8 @@ class Quote:
 
     async def quote_message(self, message, requestor=None, ctx=None):
         messages = self.bot.data.get('messages')
+        if not messages:
+            messages = [message.id]
         if message.id not in messages:
             embed_args = {
                 'description': message.content,
@@ -34,10 +36,7 @@ class Quote:
             await target.send(embed=embed)
             await message.add_reaction('\U0001f44d')
 
-            if messages:
-                messages.append(message.id)
-            else:
-                messages = [message.id]
+            messages.append(message.id)
 
             await self.bot.data.put('messages', messages)
         else:
