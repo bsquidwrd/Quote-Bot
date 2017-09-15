@@ -12,7 +12,7 @@ I'd prefer if only my instance was running so the bot and users don't get confus
 
 ## Requirements
 - Python 3.6+
-- Async version of discord.py
+- Rewrite version of discord.py
 
 ## Thanks
 - [Rapptz](https://github.com/Rapptz) and his amazing work on [Discord.py](https://github.com/Rapptz/discord.py) combined with the code I used as a template [RoboDanny](https://github.com/Rapptz/RoboDanny)
