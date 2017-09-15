@@ -13,7 +13,7 @@ class Quote:
     async def quote_message(self, message, requestor=None, ctx=None):
         messages = self.bot.data.get('messages')
         if not messages:
-            messages = [message.id]
+            messages = []
         if message.id not in messages:
             embed_args = {
                 'description': message.content,
@@ -43,11 +43,8 @@ class Quote:
             pass
 
     async def on_reaction_add(self, reaction, user):
-        try:
-            if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
-                await self.quote_message(reaction.message, requestor=user)
-        except Exception as e:
-            self.bot.log(e)
+        if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
+            await self.quote_message(reaction.message, requestor=user)
 
     @commands.command(name='id')
     async def id_command(self, ctx, *, message_id):
@@ -55,7 +52,7 @@ class Quote:
             message = await ctx.channel.get_message(int(message_id))
             await self.quote_message(message, requestor=ctx.author)
         except Exception as e:
-            self.bot.log(e)
+            print(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
 
     @commands.command(name='user')
