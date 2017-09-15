@@ -43,8 +43,11 @@ class Quote:
             pass
 
     async def on_reaction_add(self, reaction, user):
-        if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
-            await self.quote_message(reaction.message, requestor=user)
+        try:
+            if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
+                await self.quote_message(reaction.message, requestor=user)
+        except Exception as e:
+            self.bot.log(e)
 
     @commands.command(name='id')
     async def id_command(self, ctx, *, message_id):
@@ -52,7 +55,7 @@ class Quote:
             message = await ctx.channel.get_message(int(message_id))
             await self.quote_message(message, requestor=ctx.author)
         except Exception as e:
-            print(e)
+            self.bot.log(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
 
     @commands.command(name='user')
