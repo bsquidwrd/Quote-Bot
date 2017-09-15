@@ -1,5 +1,5 @@
 ## Quote Bot
-[![Build Status](https://travis-ci.org/bsquidwrd/Quote-Bot.svg?branch=master)](https://travis-ci.org/bsquidwrd/Quote-Bot) [![Documentation Status](https://readthedocs.org/projects/quote-bot/badge/?version=latest)](http://quote-bot.readthedocs.io/en/latest/?badge=latest) [![Requirements Status](https://requires.io/github/bsquidwrd/Quote-Bot/requirements.svg?branch=master)](https://requires.io/github/bsquidwrd/Quote-Bot/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/bsquidwrd/Quote-Bot/requirements.svg?branch=master)](https://requires.io/github/bsquidwrd/Quote-Bot/requirements/?branch=master)
 
 
 ## Running
