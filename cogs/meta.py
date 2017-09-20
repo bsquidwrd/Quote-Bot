@@ -23,7 +23,7 @@ class Meta:
         if isinstance(error, commands.BadArgument):
             await ctx.send(error)
 
-    @commands.command(name='invite')
+    @commands.command(name='invite', hidden=True)
     async def _help(self, ctx, *, command: str = None):
         """Shows the invite url for the bot"""
         await ctx.send("{}, click here to invite me! {}".format(ctx.author.mention, self.bot.invite_url))
@@ -34,7 +34,7 @@ class Meta:
         app_info = await self.bot.application_info()
         await ctx.send('Hello! I\'m a robot! {0.name}#{0.discriminator} made me.'.format(app_info.owner))
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def source(self, ctx, *, command: str = None):
         """Displays my full source code or for a specific command.
         To display the source code of a subcommand you can separate it by

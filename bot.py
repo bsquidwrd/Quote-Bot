@@ -16,8 +16,9 @@ from discord.ext import commands
 github_url = 'https://github.com/bsquidwrd/Quote-Bot'
 
 description = """
-Hello! I am a bot written by bsquidwrd to provide easy quoting for your amusement
-"""
+Hello! I am a bot written by bsquidwrd to provide easy quoting for your amusement.
+Simply add the {} reaction to a message to quote it!
+""".format(credentials.quote_emote)
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
