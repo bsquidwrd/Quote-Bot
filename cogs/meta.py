@@ -15,7 +15,6 @@ class Meta:
     def __init__(self, bot):
         self.bot = bot
         self._task = bot.loop.create_task(self.run_tasks())
-        bot.remove_command('help')
 
     def __unload(self):
         self._task.cancel()
@@ -23,11 +22,6 @@ class Meta:
     async def __error(self, ctx, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(error)
-
-    @commands.command(name='help')
-    async def _help(self, ctx, *, command: str = None):
-        """Shows help about a command or the bot"""
-        await ctx.send("Add the {} reaction to a message and I'll quote it!".format(self.bot.quote_emote))
 
     @commands.command(name='invite')
     async def _help(self, ctx, *, command: str = None):

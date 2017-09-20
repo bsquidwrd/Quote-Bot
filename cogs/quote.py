@@ -51,6 +51,7 @@ class Quote:
 
     @commands.command(name='id')
     async def id_command(self, ctx, *, message_id):
+        """Quote a message with a specific Message ID in the current channel"""
         try:
             message = await ctx.channel.get_message(int(message_id))
             await self.quote_message(message, requestor=ctx.author)
@@ -60,6 +61,7 @@ class Quote:
 
     @commands.command(name='user')
     async def user_command(self, ctx, *, user : discord.Member):
+        """Quote the last message from a specific user in the current channel"""
         message = None
         async for m in ctx.channel.history(limit=None, before=ctx.message, reverse=False):
             if m.author == user:

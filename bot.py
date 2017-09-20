@@ -16,7 +16,7 @@ from discord.ext import commands
 github_url = 'https://github.com/bsquidwrd/Quote-Bot'
 
 description = """
-Hello! I am a bot written by bsquidwrd to provide easy quotes for your amusement
+Hello! I am a bot written by bsquidwrd to provide easy quoting for your amusement
 """
 
 log = logging.getLogger(__name__)
