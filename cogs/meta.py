@@ -15,7 +15,6 @@ class Meta:
     def __init__(self, bot):
         self.bot = bot
         self._task = bot.loop.create_task(self.run_tasks())
-        bot.loop.create_task(self.update())
 
     def __unload(self):
         self._task.cancel()
@@ -59,10 +58,15 @@ class Meta:
         final_url = f'<{source_url}/blob/master/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}>'
         await ctx.send(final_url)
 
+    async def update_game(self):
+        bot_game = discord.Game(name='Server Count: {}'.format(len(self.bot.guilds)), url=self.bot.github_url, type=0)
+        await self.bot.change_presence(game=bot_game, status=discord.Status.online, afk=False)
+
     async def run_tasks(self):
         try:
             while not self.bot.is_ready():
                 await asyncio.sleep(1)
+            await self.update()
             while not self.bot.is_closed():
                 await self.update_avatar()
                 await asyncio.sleep(3600)
@@ -106,6 +110,7 @@ class Meta:
         await self.update()
 
     async def update(self):
+        await self.update_game()
         if not self.bot.dbots_key or self.bot.dbots_key == '':
             return
         while not self.bot.is_ready():
