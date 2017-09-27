@@ -119,7 +119,7 @@ class Meta:
             'content-type': 'application/json'
         }
 
-        url = '{0}/bots/{1.user.id}/stats'.format(DISCORD_BOTS_API, self)
+        url = '{0}/bots/{1}/stats'.format(DISCORD_BOTS_API, self.bot.client_id)
         try:
             async with self.bot.session.post(url, data=payload, headers=headers) as resp:
                 await self.bot.log_channel.send('DBots statistics returned {0.status} for {1}'.format(resp, payload))
