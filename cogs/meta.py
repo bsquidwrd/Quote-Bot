@@ -15,7 +15,7 @@ class Meta:
     def __init__(self, bot):
         self.bot = bot
         self._task = bot.loop.create_task(self.run_tasks())
-        self._task = bot.loop.create_task(self.update())
+        bot.loop.create_task(self.update())
 
     def __unload(self):
         self._task.cancel()
