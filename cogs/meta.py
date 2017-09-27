@@ -124,7 +124,7 @@ class Meta:
             async with self.bot.session.post(url, data=payload, headers=headers) as resp:
                 await self.bot.log_channel.send('DBots statistics returned {0.status} for {1}'.format(resp, payload))
         except Exception as e:
-            self.bot.log.info(e)
+            self.bot.log(e)
 
 def setup(bot):
     bot.add_cog(Meta(bot))
