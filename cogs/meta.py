@@ -111,7 +111,7 @@ class Meta:
         while not self.bot.is_ready():
             await asyncio.sleep(1)
         payload = json.dumps({
-            'server_count': len(self.guilds),
+            'server_count': len(self.bot.guilds),
         })
 
         headers = {
