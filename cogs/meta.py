@@ -15,6 +15,7 @@ class Meta:
     def __init__(self, bot):
         self.bot = bot
         self._task = bot.loop.create_task(self.run_tasks())
+        self._task = bot.loop.create_task(self.update())
 
     def __unload(self):
         self._task.cancel()
@@ -107,6 +108,8 @@ class Meta:
     async def update(self):
         if not self.bot.dbots_key or self.bot.dbots_key == '':
             return
+        while not self.bot.is_ready():
+            await asyncio.sleep(1)
         payload = json.dumps({
             'server_count': len(self.guilds),
         })
