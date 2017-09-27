@@ -122,7 +122,7 @@ class Meta:
         url = '{0}/bots/{1}/stats'.format(DISCORD_BOTS_API, self.bot.client_id)
         try:
             async with self.bot.session.post(url, data=payload, headers=headers) as resp:
-                await self.bot.log_channel.send('DBots statistics returned {0.status} for {1}'.format(resp, payload))
+                await self.bot.log('DBots statistics returned {0.status} for {1}'.format(resp, payload))
         except Exception as e:
             self.bot.log(e)
 
