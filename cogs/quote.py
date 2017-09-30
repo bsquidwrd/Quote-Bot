@@ -31,6 +31,18 @@ class Quote:
         await target.send(embed=embed)
         await message.add_reaction('\U0001f44d')
 
+        log_embed = embed
+        if type(message.channel) == discord.channel.TextChannel:
+            server_id = "{0.name} ({0.id})".format(message.channel.guild)
+        else:
+            server_id = "Private Message"
+        log_embed.add_field(name="Server", value=server_id)
+        log_embed.add_field(name="Requestor ID", value=requestor.id)
+        log_embed.add_field(name="User ID", value=message.author.id)
+        log_embed.add_field(name="Message ID", value=message.id)
+        log_channel = self.bot.get_channel(self.bot.log_channel)
+        await log_channel.send(embed=log_embed)
+
     async def on_reaction_add(self, reaction, user):
         try:
             if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:

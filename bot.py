@@ -48,6 +48,7 @@ class QuoteBot(commands.AutoShardedBot):
         self.quote_emote = credentials.quote_emote
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.github_url = github_url
+        self.log_channel = credentials.log_channel
 
         for extension in initial_extensions:
             try:
