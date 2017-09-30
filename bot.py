@@ -8,7 +8,6 @@ import logging
 import os
 import sys
 import traceback
-from cogs import config
 from pathlib import Path
 from discord.ext import commands
 
@@ -49,7 +48,6 @@ class QuoteBot(commands.AutoShardedBot):
         self.quote_emote = credentials.quote_emote
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.github_url = github_url
-        self.data = config.Config('data.json', loop=self.loop)
 
         for extension in initial_extensions:
             try:
