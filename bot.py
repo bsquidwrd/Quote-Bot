@@ -1,6 +1,5 @@
 import aiohttp
 import asyncio
-import credentials
 import datetime
 import discord
 import json
@@ -10,6 +9,11 @@ import sys
 import traceback
 from pathlib import Path
 from discord.ext import commands
+
+try:
+    import credentials
+except:
+    pass
 
 
 github_url = 'https://github.com/bsquidwrd/Quote-Bot'
