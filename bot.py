@@ -16,12 +16,14 @@ except:
     pass
 
 
+quote_emote = u"\U0001F4AC"
+
 github_url = 'https://github.com/bsquidwrd/Quote-Bot'
 
 description = """
 Hello! I am a bot written by bsquidwrd to provide easy quoting for your amusement.
 Simply add the {} reaction to a message to quote it!
-""".format(os.getenv('QUOTE_EMOTE', '\U0001f4ac'))
+""".format(quote_emote)
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -49,7 +51,7 @@ class QuoteBot(commands.AutoShardedBot):
         self.owner_id = int(os.getenv('OWNER_ID', None))
         self.dbots_key = os.getenv('DBOTS_KEY', None)
         self.invite_url = os.getenv('INVITE_URL', None)
-        self.quote_emote = os.getenv('QUOTE_EMOTE', None)
+        self.quote_emote = quote_emote
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.github_url = github_url
         self.log_channel = int(os.getenv('LOG_CHANNEL', None))
