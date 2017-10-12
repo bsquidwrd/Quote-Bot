@@ -17,7 +17,7 @@ github_url = 'https://github.com/bsquidwrd/Quote-Bot'
 description = """
 Hello! I am a bot written by bsquidwrd to provide easy quoting for your amusement.
 Simply add the {} reaction to a message to quote it!
-""".format(credentials.quote_emote)
+""".format(os.getenv('QUOTE_EMOTE', '\U0001f4ac'))
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -40,15 +40,15 @@ class QuoteBot(commands.AutoShardedBot):
         super().__init__(command_prefix=_prefix_callable, description=description,
                          pm_help=None, help_attrs=dict(hidden=True))
 
-        self.client_id = credentials.client_id
-        self.client_token = credentials.client_token
-        self.owner_id = credentials.owner_id
-        self.dbots_key = credentials.dbots_key
-        self.invite_url = credentials.invite_url
-        self.quote_emote = credentials.quote_emote
+        self.client_id = int(os.getenv('CLIENT_ID', None))
+        self.client_token = os.getenv('CLIENT_TOKEN', None)
+        self.owner_id = int(os.getenv('OWNER_ID', None))
+        self.dbots_key = os.getenv('DBOTS_KEY', None)
+        self.invite_url = os.getenv('INVITE_URL', None)
+        self.quote_emote = os.getenv('QUOTE_EMOTE', None)
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.github_url = github_url
-        self.log_channel = credentials.log_channel
+        self.log_channel = int(os.getenv('LOG_CHANNEL', None))
 
         for extension in initial_extensions:
             try:
