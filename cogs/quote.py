@@ -58,7 +58,6 @@ class Quote:
                 return
             for reaction in message.reactions:
                 if reaction.emoji == emoji.name and not user.bot and reaction.count == 1:
-                    print("Hiya")
                     await self.quote_message(message, requestor=user)
         except Exception as e:
             self.bot.log(e)
