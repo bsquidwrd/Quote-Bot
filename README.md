@@ -7,7 +7,7 @@ _NOTE: If you want to run this yourself, make sure the bot is a "Bot User"_
 
 I'd prefer if only my instance was running so the bot and users don't get confused. You should only need one main configuration file while the rest will be created automatically, the `credentials.py` file.
 
-[Click here to have the bot added to your server](https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=117824)
+[Click here to have the bot added to your server](https://discordapp.com/oauth2/authorize?client_id=251960188217720832&scope=bot&permissions=125952)
 
 
 ## Requirements

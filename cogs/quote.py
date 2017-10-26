@@ -43,10 +43,23 @@ class Quote:
         log_channel = self.bot.get_channel(self.bot.log_channel)
         await log_channel.send(embed=log_embed)
 
-    async def on_reaction_add(self, reaction, user):
+    # async def on_reaction_add(self, reaction, user):
+    #     try:
+    #         if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
+    #             await self.quote_message(reaction.message, requestor=user)
+    #     except Exception as e:
+    #         self.bot.log(e)
+    async def on_raw_reaction_add(self, emoji, message_id, channel_id, user_id):
         try:
-            if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
-                await self.quote_message(reaction.message, requestor=user)
+            channel = self.bot.get_channel(channel_id)
+            message = await channel.get_message(message_id)
+            user = self.bot.get_user(user_id)
+            if emoji.name != self.bot.quote_emote:
+                return
+            for reaction in message.reactions:
+                if reaction.emoji == emoji.name and not user.bot and reaction.count == 1:
+                    print("Hiya")
+                    await self.quote_message(message, requestor=user)
         except Exception as e:
             self.bot.log(e)
 
@@ -59,6 +72,10 @@ class Quote:
         except Exception as e:
             self.bot.log(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
+        try:
+            await ctx.message.delete()
+        except:
+            pass
 
     @commands.command(name='user')
     async def user_command(self, ctx, *, user : discord.Member):
@@ -72,6 +89,10 @@ class Quote:
             await self.quote_message(message, ctx=ctx, requestor=ctx.author)
         else:
             await ctx.send("I couldn't find the last message {} sent, sorry :(".format(user.name))
+        try:
+            await ctx.message.delete()
+        except:
+            pass
 
 
 def setup(bot):
