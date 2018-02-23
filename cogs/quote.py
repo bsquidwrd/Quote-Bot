@@ -9,14 +9,16 @@ class Quote:
     def __init__(self, bot):
         self.bot = bot
 
-    async def quote_message(self, message, requestor=None, ctx=None):
+    async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None):
         embed_args = {
-            'description': message.content,
-            'colour': message.author.colour,
-            'timestamp': message.created_at,
+            'description': message_to_quote if message_to_quote else message.content,
+            'colour': requestor.colour if message_to_quote else message.author.colour,
+            'timestamp': ctx.message.created_at if message_to_quote else message.created_at,
         }
         embed = discord.Embed(**embed_args)
-        embed.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
+        avatar_url = message.author.avatar_url if message else requestor.avatar_url
+        name = message.author.display_name if message else requestor.display_name
+        embed.set_author(name=name, icon_url=avatar_url)
         if requestor:
             embed.set_footer(text="Requested by: {}".format(requestor.name))
 
@@ -29,7 +31,8 @@ class Quote:
             target = message.channel
 
         await target.send(embed=embed)
-        await message.add_reaction('\U0001f44d')
+        if not message_to_quote:
+            await message.add_reaction('\U0001f44d')
 
         log_embed = embed
         if type(message.channel) == discord.channel.TextChannel:
@@ -88,6 +91,19 @@ class Quote:
             await self.quote_message(message, ctx=ctx, requestor=ctx.author)
         else:
             await ctx.send("I couldn't find the last message {} sent, sorry :(".format(user.name))
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+    
+    @commands.command(name='quote')
+    async def quote_command(self, ctx, *, message: str):
+        """Quote a specific message"""
+        print(ctx.message.clean_content)
+        if message:
+            await self.quote_message(message=ctx.message, message_to_quote=message, ctx=ctx, requestor=ctx.author)
+        else:
+            await ctx.send("I can't quote that for some reason, sorry :(")
         try:
             await ctx.message.delete()
         except:
