@@ -46,14 +46,12 @@ class Quote:
         log_channel = self.bot.get_channel(self.bot.log_channel)
         await log_channel.send(embed=log_embed)
 
-    # async def on_reaction_add(self, reaction, user):
-    #     try:
-    #         if reaction.emoji == self.bot.quote_emote and not user.bot and reaction.count == 1:
-    #             await self.quote_message(reaction.message, requestor=user)
-    #     except Exception as e:
-    #         self.bot.log(e)
-    async def on_raw_reaction_add(self, emoji, message_id, channel_id, user_id):
+    async def on_raw_reaction_add(self, payload):
         try:
+            emoji = payload.emoji
+            message_id = payload.message_id
+            channel_id = payload.channel_id
+            user_id = payload.user_id
             channel = self.bot.get_channel(channel_id)
             message = await channel.get_message(message_id)
             user = self.bot.get_user(user_id)

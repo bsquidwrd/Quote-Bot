@@ -1,3 +1,7 @@
+docker-compose.yml
+*.env
+
+
 node_modules/*
 *.log
 *.db

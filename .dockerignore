@@ -1,0 +1,9 @@
+credentials.py
+docker-compose.yml
+*.env
+.dist/
+.vscode/
+env/
+avatar.png
+Procfile
+runtime.txt
