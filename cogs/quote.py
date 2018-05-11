@@ -20,7 +20,7 @@ class Quote:
         name = message.author.display_name if message else requestor.display_name
         embed.set_author(name=name, icon_url=avatar_url)
         if requestor:
-            embed.set_footer(text="Requested by: {}".format(requestor.name))
+            embed.set_footer(text="Requested by: {}".format(requestor.display_name))
 
         if message.content == "" or message.content is None:
             embed.set_image(url=message.attachments[0].url)
