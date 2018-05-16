@@ -54,7 +54,7 @@ class Quote:
             user_id = payload.user_id
             channel = self.bot.get_channel(channel_id)
             message = await channel.get_message(message_id)
-            user = self.bot.get_user(user_id)
+            user = channel.guild.get_member(user_id)
             if emoji.name != self.bot.quote_emote:
                 return
             for reaction in message.reactions:
