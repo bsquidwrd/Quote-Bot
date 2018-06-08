@@ -9,7 +9,7 @@ WORKDIR /code/
 ADD requirements.txt /requirements.txt
 RUN python -m pip install -U pip
 RUN pip install --no-cache-dir -r /requirements.txt
-RUN pip install --upgrade aiohttp
+RUN pip install --upgrade aiohttp==2.2.5
 
 # Add code and volumes
 ADD . /code/

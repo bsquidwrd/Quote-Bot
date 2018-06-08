@@ -54,7 +54,7 @@ class Quote:
             user_id = payload.user_id
             channel = self.bot.get_channel(channel_id)
             message = await channel.get_message(message_id)
-            user = self.bot.get_user(user_id)
+            user = channel.guild.get_member(user_id)
             if emoji.name != self.bot.quote_emote:
                 return
             for reaction in message.reactions:
@@ -68,7 +68,7 @@ class Quote:
         """Quote a message with a specific Message ID in the current channel"""
         try:
             message = await ctx.channel.get_message(int(message_id))
-            await self.quote_message(message, requestor=ctx.author)
+            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id))
         except Exception as e:
             self.bot.log(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
@@ -86,7 +86,7 @@ class Quote:
                 message = m
                 break
         if message:
-            await self.quote_message(message, ctx=ctx, requestor=ctx.author)
+            await self.quote_message(message, ctx=ctx, requestor=ctx.channel.guild.get_member(ctx.author.id))
         else:
             await ctx.send("I couldn't find the last message {} sent, sorry :(".format(user.name))
         try:
@@ -97,9 +97,8 @@ class Quote:
     @commands.command(name='quote')
     async def quote_command(self, ctx, *, message: str):
         """Quote a specific message"""
-        print(ctx.message.clean_content)
         if message:
-            await self.quote_message(message=ctx.message, message_to_quote=message, ctx=ctx, requestor=ctx.author)
+            await self.quote_message(message=ctx.message, message_to_quote=message, ctx=ctx, requestor=ctx.channel.guild.get_member(ctx.author.id))
         else:
             await ctx.send("I can't quote that for some reason, sorry :(")
         try:
