@@ -60,7 +60,7 @@ class Meta:
 
     async def update_game(self):
         bot_game = discord.Game(name='Server Count: {}'.format(len(self.bot.guilds)), url=self.bot.github_url, type=0)
-        await self.bot.change_presence(game=bot_game, status=discord.Status.online, afk=False)
+        await self.bot.change_presence(activity=bot_game, status=discord.Status.online, afk=False)
 
     async def run_tasks(self):
         try:
