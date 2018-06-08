@@ -12,9 +12,12 @@ class Quote:
     async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None):
         embed_args = {
             'description': message_to_quote if message_to_quote else message.content,
-            'colour': requestor.colour if message_to_quote else message.author.colour,
             'timestamp': ctx.message.created_at if message_to_quote else message.created_at,
         }
+        try:
+            embed_args['colour'] = requestor.colour if message_to_quote else message.author.colour
+        except:
+            pass
         embed = discord.Embed(**embed_args)
         avatar_url = message.author.avatar_url if message else requestor.avatar_url
         name = message.author.display_name if message else requestor.display_name
