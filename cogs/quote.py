@@ -79,6 +79,20 @@ class Quote:
             await ctx.message.delete()
         except:
             pass
+        
+    @commands.command(name='from')
+    async def id_command(self, ctx, *, channel: discord.TextChannel, *, message_id):
+        """Quote a message from a specific channel with a specific Message ID in the current channel"""
+        try:
+            message = await channel.get_message(int(message_id))
+            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id))
+        except Exception as e:
+            self.bot.log(e)
+            await ctx.send("I couldn't find a message with that ID from that channel, sorry :(")
+        try:
+            await ctx.message.delete()
+        except:
+            pass
 
     @commands.command(name='user')
     async def user_command(self, ctx, *, user : discord.Member):
