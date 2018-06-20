@@ -36,8 +36,6 @@ class Quote:
             embed.set_footer(text="Requested by: {}#{} | Message From: {}".format(requestor.display_name, requestor.discriminator, target.name))
 
         await target.send(embed=embed)
-        if not message_to_quote:
-            await message.add_reaction('\U0001f44d')
 
         log_embed = embed
         if type(message.channel) == discord.channel.TextChannel:
