@@ -84,7 +84,7 @@ class Quote:
     
     @commands.command(name='from')
     async def from_command(self, ctx, channel: discord.TextChannel, *, message_id):
-        """Quote a message with a specific Message ID in the current channel"""
+        """Quote a message with a specific Message ID from the specified channel"""
         try:
             message = await channel.get_message(int(message_id))
             await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id), ctx=ctx)
