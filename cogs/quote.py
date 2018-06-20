@@ -9,7 +9,7 @@ class Quote:
     def __init__(self, bot):
         self.bot = bot
 
-    async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None, target=None):
+    async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None):
         embed_args = {
             'description': message_to_quote if message_to_quote else message.content,
             'timestamp': ctx.message.created_at if message_to_quote else message.created_at,
@@ -26,6 +26,8 @@ class Quote:
 
         if message.content == "" or message.content is None:
             embed.set_image(url=message.attachments[0].url)
+        
+        source_channel = message.channel
 
         if ctx:
             target = ctx.channel
@@ -33,7 +35,7 @@ class Quote:
             target = message.channel
 
         if requestor:
-            embed.set_footer(text="Requested by: {}#{} | Message From: {}".format(requestor.display_name, requestor.discriminator, target.name))
+            embed.set_footer(text="Requested by: {}#{} | Message From: {}".format(requestor.display_name, requestor.discriminator, source_channel.name if source_channel != target else target.name))
 
         await target.send(embed=embed)
 
@@ -71,7 +73,7 @@ class Quote:
         """Quote a message with a specific Message ID in the current channel"""
         try:
             message = await ctx.channel.get_message(int(message_id))
-            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id))
+            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id), ctx=ctx)
         except Exception as e:
             self.bot.log(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
@@ -103,7 +105,7 @@ class Quote:
                 message = m
                 break
         if message:
-            await self.quote_message(message, ctx=ctx, requestor=ctx.channel.guild.get_member(ctx.author.id))
+            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id), ctx=ctx)
         else:
             await ctx.send("I couldn't find the last message {} sent, sorry :(".format(user.name))
         try:
