@@ -9,7 +9,7 @@ class Quote:
     def __init__(self, bot):
         self.bot = bot
 
-    async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None):
+    async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None, target=None):
         embed_args = {
             'description': message_to_quote if message_to_quote else message.content,
             'timestamp': ctx.message.created_at if message_to_quote else message.created_at,
@@ -20,18 +20,20 @@ class Quote:
             pass
         embed = discord.Embed(**embed_args)
         avatar_url = message.author.avatar_url if message else requestor.avatar_url
-        name = message.author.display_name if message else requestor.display_name
+        author = message.author if message else requestor
+        name = "{}#{}".format(author.display_name, author.discriminator)
         embed.set_author(name=name, icon_url=avatar_url)
-        if requestor:
-            embed.set_footer(text="Requested by: {}".format(requestor.display_name))
 
         if message.content == "" or message.content is None:
             embed.set_image(url=message.attachments[0].url)
 
         if ctx:
-            target = ctx
+            target = ctx.channel
         else:
             target = message.channel
+
+        if requestor:
+            embed.set_footer(text="Requested by: {}#{} | Message From: {}".format(requestor.display_name, requestor.discriminator, target.name))
 
         await target.send(embed=embed)
         if not message_to_quote:
@@ -72,6 +74,20 @@ class Quote:
         try:
             message = await ctx.channel.get_message(int(message_id))
             await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id))
+        except Exception as e:
+            self.bot.log(e)
+            await ctx.send("I couldn't find a message with that ID, sorry :(")
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+    
+    @commands.command(name='from')
+    async def from_command(self, ctx, channel: discord.TextChannel, *, message_id):
+        """Quote a message with a specific Message ID in the current channel"""
+        try:
+            message = await channel.get_message(int(message_id))
+            await self.quote_message(message, requestor=ctx.channel.guild.get_member(ctx.author.id), ctx=ctx)
         except Exception as e:
             self.bot.log(e)
             await ctx.send("I couldn't find a message with that ID, sorry :(")
