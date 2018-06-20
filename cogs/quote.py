@@ -35,7 +35,7 @@ class Quote:
             target = message.channel
 
         if requestor:
-            embed.set_footer(text="Requested by: {}#{} | Message From: {}".format(requestor.display_name, requestor.discriminator, source_channel.name if source_channel != target else target.name))
+            embed.set_footer(text="Requested by: {}#{} | Message From: #{}".format(requestor.display_name, requestor.discriminator, source_channel.name if source_channel != target else target.name))
 
         await target.send(embed=embed)
 
