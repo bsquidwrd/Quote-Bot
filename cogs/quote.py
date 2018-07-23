@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 import asyncio
+import re
 
 
 class Quote:
@@ -8,6 +9,7 @@ class Quote:
 
     def __init__(self, bot):
         self.bot = bot
+        self.imgtypes = 'jpg|png|gif|gifv'
 
     async def quote_message(self, message=None, message_to_quote=None, requestor=None, ctx=None):
         embed_args = {
@@ -24,9 +26,18 @@ class Quote:
         name = "{}#{}".format(author.display_name, author.discriminator)
         embed.set_author(name=name, icon_url=avatar_url)
 
-        if message.content == "" or message.content is None:
-            embed.set_image(url=message.attachments[0].url)
-        
+        if message.attachments:
+            if (message.attachments[0].height and len(message.attachments) == 1):
+                embed.set_image(url=message.attachments[0].url)
+            else:
+                attachment_urls = "\n".join([f"[{a.filename}]({a.url})" for a in message.attachments])
+                embed.add_field(name="", value=attachment_urls, inline=True)
+        else:
+            pattern = re.compile(f'https?:\/\/.*?\.({self.imgtypes})', re.IGNORECASE)
+            match = pattern.match(message.content)
+            if match:
+                embed.set_image(url=match.group())
+
         source_channel = message.channel
 
         if ctx:
@@ -35,21 +46,15 @@ class Quote:
             target = message.channel
 
         if requestor:
-            embed.set_footer(text="Requested by: {}#{} | Message From: #{}".format(requestor.display_name, requestor.discriminator, source_channel.name if source_channel != target else target.name))
+            format_kwargs = {
+                'display_name': requestor.display_name,
+                'discriminator': requestor.discriminator,
+                'channel_name': source_channel.name if source_channel != target else target.name
+            }
+            embed.set_footer(text="Requested by: {display_name}#{discriminator} | Message From: #{channel_name}".format(**format_kwargs))
 
         await target.send(embed=embed)
 
-        log_embed = embed
-        if type(message.channel) == discord.channel.TextChannel:
-            server_id = "{0.name} ({0.id})".format(message.channel.guild)
-        else:
-            server_id = "Private Message"
-        log_embed.add_field(name="Server", value=server_id)
-        log_embed.add_field(name="Requestor ID", value=requestor.id)
-        log_embed.add_field(name="User ID", value=message.author.id)
-        log_embed.add_field(name="Message ID", value=message.id)
-        log_channel = self.bot.get_channel(self.bot.log_channel)
-        await log_channel.send(embed=log_embed)
 
     async def on_raw_reaction_add(self, payload):
         try:
