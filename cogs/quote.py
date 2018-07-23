@@ -31,7 +31,7 @@ class Quote:
                 embed.set_image(url=message.attachments[0].url)
             else:
                 attachment_urls = "\n".join([f"[{a.filename}]({a.url})" for a in message.attachments])
-                embed.add_field(name="", value=attachment_urls, inline=True)
+                embed.add_field(name="Attachment(s)", value=attachment_urls, inline=True)
         else:
             pattern = re.compile(f'https?:\/\/.*?\.({self.imgtypes})', re.IGNORECASE)
             match = pattern.match(message.content)
