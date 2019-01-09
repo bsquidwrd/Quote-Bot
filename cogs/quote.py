@@ -23,7 +23,7 @@ class Quote:
         embed = discord.Embed(**embed_args)
         avatar_url = message.author.avatar_url if message else requestor.avatar_url
         author = message.author if message else requestor
-        name = "{}#{}".format(author.display_name, author.discriminator)
+        name = author.display_name
         embed.set_author(name=name, icon_url=avatar_url)
 
         if message.attachments:
@@ -48,10 +48,9 @@ class Quote:
         if requestor:
             format_kwargs = {
                 'display_name': requestor.display_name,
-                'discriminator': requestor.discriminator,
                 'channel_name': source_channel.name if source_channel != target else target.name
             }
-            embed.set_footer(text="Requested by: {display_name}#{discriminator} | Message From: #{channel_name}".format(**format_kwargs))
+            embed.set_footer(text="Requested by: {display_name} | Message From: #{channel_name}".format(**format_kwargs))
 
         await target.send(embed=embed)
 
